@@ -1,3 +1,8 @@
+"use client";
+
+import { PageHeader } from "../_components/page-header";
+import { isSupabaseConfigured } from "../../src/lib/supabaseClient";
+
 const preferences = [
   { label: "Thème", value: "Clair pastel", tone: "bg-violet-100 text-violet-700" },
   { label: "Groupe par défaut", value: "Maison", tone: "bg-sky-100 text-sky-700" },
@@ -38,19 +43,13 @@ export default function ProfilPage() {
                   </span>
                   <div>
                     <h2 className="text-2xl font-semibold text-slate-900">Stéphane</h2>
-                    <p className="mt-1 text-sm text-slate-500">
-                      Administrateur du groupe Maison
-                    </p>
+                    <p className="mt-1 text-sm text-slate-500">Administrateur du groupe Maison</p>
                   </div>
                 </div>
 
                 <div className="rounded-3xl bg-violet-50 px-4 py-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-500">
-                    Email
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-slate-700">
-                    stephane@example.com
-                  </p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-500">Email</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-700">stephane@example.com</p>
                 </div>
               </div>
             </div>
@@ -65,9 +64,7 @@ export default function ProfilPage() {
                     <p className="text-sm font-medium text-slate-500">{item.label}</p>
                     <p className="mt-1 font-semibold text-slate-900">{item.value}</p>
                   </div>
-                  <span className={`rounded-full px-3 py-2 text-xs font-semibold ${item.tone}`}>
-                    Actif
-                  </span>
+                  <span className={`rounded-full px-3 py-2 text-xs font-semibold ${item.tone}`}>Actif</span>
                 </div>
               ))}
             </div>
@@ -89,9 +86,8 @@ export default function ProfilPage() {
                   <div
                     key={stat.label}
                     className={[
-                      "rounded-3xl p-4 text-center shadow-sm",
+                      "rounded-3xl p-4 text-center shadow-sm bg-slate-50",
                       index === 2 || index === 3 ? "col-span-2" : "",
-                      "bg-slate-50",
                     ].join(" ")}
                   >
                     <div className="text-2xl font-bold text-slate-900">{stat.value}</div>
@@ -106,9 +102,7 @@ export default function ProfilPage() {
             <article className="glass-card p-5 md:p-6">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">
-                    Actions
-                  </p>
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">Actions</p>
                   <h3 className="mt-2 text-xl font-semibold text-slate-900">Paramètres</h3>
                 </div>
               </div>
@@ -129,10 +123,31 @@ export default function ProfilPage() {
                 ))}
               </div>
             </article>
+
+            <article className="glass-card p-5 md:p-6">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">Connexion</p>
+                  <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                    {isSupabaseConfigured ? "Connecté à Supabase" : "Mode démo"}
+                  </h3>
+                </div>
+                <span
+                  className={[
+                    "rounded-full px-3 py-2 text-xs font-semibold",
+                    isSupabaseConfigured ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600",
+                  ].join(" ")}
+                >
+                  {isSupabaseConfigured ? "En ligne" : "Hors ligne"}
+                </span>
+              </div>
+              <p className="mt-3 text-sm text-slate-500">
+                L'interface continue d'utiliser les données mockées tant que la base n'est pas branchée.
+              </p>
+            </article>
           </aside>
         </section>
       </div>
     </main>
   );
 }
-import { PageHeader } from "../_components/page-header";
