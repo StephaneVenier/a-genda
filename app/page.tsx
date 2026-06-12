@@ -57,7 +57,7 @@ const categories = [
   { label: "Important", style: "bg-violet-100 text-violet-700" },
 ];
 
-const navItems = ["Agenda", "Menus", "Courses", "Ménage", "Groupes", "Profil"];
+const navItems = ["Agenda", "Menus", "Courses", "Ménage", "Plus"];
 
 export default function HomePage() {
   return (
@@ -82,7 +82,7 @@ export default function HomePage() {
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-500">
                   Groupe
                 </p>
-                <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm">
+                <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
                   <span className="h-2.5 w-2.5 rounded-full bg-violet-400" />
                   Maison
                 </div>
@@ -90,14 +90,14 @@ export default function HomePage() {
             </div>
 
             <nav className="mt-6 space-y-2">
-              {navItems.map((item, index) => (
+              {["Agenda", "Menus", "Courses", "Ménage", "Groupes", "Profil"].map((item, index) => (
                 <div
                   key={item}
                   className={[
-                    "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition",
+                    "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition duration-200",
                     index === 0
                       ? "bg-violet-100 text-violet-700 shadow-sm"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                      : "text-slate-600 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900 hover:shadow-sm",
                   ].join(" ")}
                 >
                   <span className="h-2.5 w-2.5 rounded-full bg-violet-300" />
@@ -132,7 +132,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <button className="inline-flex items-center justify-center rounded-2xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-500">
+            <button className="inline-flex items-center justify-center rounded-2xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition duration-200 hover:-translate-y-0.5 hover:bg-violet-500 hover:shadow-xl">
               + Nouvel événement
             </button>
           </header>
@@ -154,8 +154,8 @@ export default function HomePage() {
 
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.8fr)_360px]">
             <section className="space-y-6">
-              <article className="glass-card p-5 md:p-6">
-                <div className="mb-5 flex items-center justify-between gap-3">
+              <article className="glass-card p-4 sm:p-5 md:p-6">
+                <div className="mb-4 flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">
                       Calendrier
@@ -167,11 +167,11 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-7 gap-2 sm:gap-2.5">
+                <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
                   {["L", "M", "M", "J", "V", "S", "D"].map((day) => (
                     <div
                       key={day}
-                      className="py-1 text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-400"
+                      className="py-1 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 sm:text-xs"
                     >
                       {day}
                     </div>
@@ -183,8 +183,8 @@ export default function HomePage() {
                       <div
                         key={`${day}-${index}`}
                         className={[
-                          "min-h-24 rounded-2xl border p-2 sm:min-h-28",
-                          day ? "border-slate-100 bg-white shadow-sm" : "border-transparent bg-transparent",
+                          "min-h-20 rounded-2xl border p-1.5 transition duration-200 sm:min-h-24 sm:p-2",
+                          day ? "border-slate-100 bg-white shadow-sm hover:-translate-y-0.5 hover:shadow-md" : "border-transparent bg-transparent",
                           isToday ? "border-violet-200 bg-violet-50/80 shadow-md shadow-violet-100" : "",
                         ].join(" ")}
                       >
@@ -193,7 +193,7 @@ export default function HomePage() {
                             <div className="flex items-start justify-between gap-2">
                               <span
                                 className={[
-                                  "inline-flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold",
+                                  "inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold sm:h-9 sm:w-9",
                                   isToday ? "bg-violet-600 text-white" : "text-slate-700",
                                 ].join(" ")}
                               >
@@ -204,16 +204,16 @@ export default function HomePage() {
                               ) : null}
                             </div>
                             {isToday ? (
-                              <p className="mt-3 inline-flex w-full items-center justify-center rounded-2xl bg-violet-600 px-2.5 py-1.5 text-[11px] font-bold text-white shadow-sm">
+                              <p className="mt-2 inline-flex w-full items-center justify-center rounded-2xl bg-violet-600 px-2 py-1.5 text-[10px] font-bold text-white shadow-sm sm:text-[11px]">
                                 Aujourd&apos;hui
                               </p>
                             ) : null}
                             {events.length > 0 ? (
-                              <div className="mt-3 space-y-1.5">
+                              <div className="mt-2 space-y-1">
                                 {events.map((event) => (
                                   <div
                                     key={event.label}
-                                    className={`rounded-xl px-2 py-1 text-[10px] font-semibold leading-4 ${event.tone}`}
+                                    className={`rounded-xl px-2 py-1 text-[10px] font-semibold leading-4 sm:text-[11px] ${event.tone}`}
                                   >
                                     {event.label}
                                   </div>
@@ -228,58 +228,58 @@ export default function HomePage() {
                 </div>
               </article>
 
-              <article className="glass-card p-5 md:p-6">
-                <div className="mb-4 flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-slate-900">Légende</h3>
-                  <span className="text-sm text-slate-500">Catégories</span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((category) => (
-                    <span
-                      key={category.label}
-                      className={`rounded-full px-3 py-2 text-xs font-semibold ${category.style}`}
-                    >
-                      {category.label}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            </section>
-
-            <aside className="space-y-6">
-              <article className="glass-card p-5 md:p-6">
-                <div className="mb-4 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">
-                      Aujourd&apos;hui
-                    </p>
-                    <h3 className="mt-2 text-xl font-semibold text-slate-900">3 événements</h3>
+              <div className="grid gap-6 md:grid-cols-2">
+                <article className="glass-card p-5 md:p-6">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-slate-900">Légende</h3>
+                    <span className="text-sm text-slate-500">Catégories</span>
                   </div>
-                  <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
-                    Jour
-                  </span>
-                </div>
+                  <div className="flex flex-wrap gap-2">
+                    {categories.map((category) => (
+                      <span
+                        key={category.label}
+                        className={`rounded-full px-3 py-2 text-xs font-semibold ${category.style}`}
+                      >
+                        {category.label}
+                      </span>
+                    ))}
+                  </div>
+                </article>
 
-                <div className="space-y-3">
-                  {todayEvents.map((event) => (
-                    <article
-                      key={event.title}
-                      className="rounded-3xl border border-slate-100 bg-white p-4 shadow-sm"
-                    >
-                      <div className="flex items-start gap-3">
-                        <span className={`mt-1 h-3 w-3 rounded-full ${event.dot}`} />
-                        <div className="min-w-0 flex-1">
-                          <h4 className="font-semibold text-slate-900">{event.title}</h4>
-                          <p className="mt-1 text-sm text-slate-500">{event.detail}</p>
+                <article className="glass-card p-5 md:p-6">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">
+                        Aujourd&apos;hui
+                      </p>
+                      <h3 className="mt-2 text-xl font-semibold text-slate-900">3 événements</h3>
+                    </div>
+                    <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700">
+                      Jour
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {todayEvents.map((event) => (
+                      <article
+                        key={event.title}
+                        className="rounded-3xl border border-slate-100 bg-white p-3.5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-4"
+                      >
+                        <div className="flex items-start gap-3">
+                          <span className={`mt-1 h-3 w-3 rounded-full ${event.dot}`} />
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-semibold text-slate-900">{event.title}</h4>
+                            <p className="mt-1 text-sm text-slate-500">{event.detail}</p>
+                          </div>
+                          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${event.badgeStyle}`}>
+                            {event.badge}
+                          </span>
                         </div>
-                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${event.badgeStyle}`}>
-                          {event.badge}
-                        </span>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </article>
+                      </article>
+                    ))}
+                  </div>
+                </article>
+              </div>
 
               <article className="glass-card p-5 md:p-6">
                 <div className="mb-4 flex items-center justify-between">
@@ -292,11 +292,32 @@ export default function HomePage() {
                   {upcomingEvents.map((item, index) => (
                     <div
                       key={item}
-                      className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700"
+                      className="flex items-center gap-3 rounded-2xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
                     >
                       <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-xs font-bold text-violet-700">
                         {index + 1}
                       </span>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </article>
+            </section>
+
+            <aside className="space-y-6">
+              <article className="glass-card p-5 md:p-6">
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-slate-900">Raccourcis</h3>
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    Mobile
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  {["Menus de la semaine", "Courses à faire", "Tâches ménagères"].map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 transition duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
+                    >
                       {item}
                     </div>
                   ))}
@@ -307,22 +328,32 @@ export default function HomePage() {
         </section>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/70 bg-white/90 px-3 py-2 backdrop-blur lg:hidden">
-        <div className="mx-auto grid max-w-3xl grid-cols-6 gap-1">
-          {navItems.map((item, index) => (
-            <div
-              key={item}
-              className={[
-                "flex flex-col items-center rounded-2xl px-2 py-2 text-[11px] font-medium transition",
-                index === 0
-                  ? "bg-violet-100 text-violet-700"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900",
-              ].join(" ")}
-            >
-              <span className="mb-1 h-2 w-2 rounded-full bg-violet-300" />
-              {item}
-            </div>
-          ))}
+      <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/70 bg-white/92 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden">
+        <div className="mx-auto grid max-w-3xl grid-cols-5 items-end gap-1">
+          {navItems.map((item, index) => {
+            const isPrimary = item === "Agenda";
+            const isCenter = item === "Plus";
+            return (
+              <div
+                key={item}
+                className={[
+                  "flex flex-col items-center justify-end rounded-2xl px-2 py-2 text-[11px] font-medium transition duration-200",
+                  isPrimary
+                    ? "bg-violet-100 text-violet-700 shadow-sm"
+                    : "text-slate-500 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900",
+                ].join(" ")}
+              >
+                {isCenter ? (
+                  <span className="mb-1 -mt-5 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-base font-bold text-white shadow-lg shadow-violet-200 ring-4 ring-white">
+                    +
+                  </span>
+                ) : (
+                  <span className="mb-1 h-2 w-2 rounded-full bg-violet-300" />
+                )}
+                {item}
+              </div>
+            );
+          })}
         </div>
       </nav>
     </main>
