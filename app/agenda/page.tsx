@@ -72,6 +72,8 @@ function formatDayLabel(date: Date) {
 export default function AgendaPage() {
   const [viewMode, setViewMode] = useState<ViewMode>("semaine");
   const [cursor, setCursor] = useState(() => new Date());
+  const [isComposerOpen, setIsComposerOpen] = useState(false);
+  const [saveToastVisible, setSaveToastVisible] = useState(false);
 
   const today = useMemo(() => new Date(), []);
   const todayISO = toISODate(today);
@@ -111,6 +113,20 @@ export default function AgendaPage() {
 
   const moveToday = () => {
     setCursor(new Date());
+  };
+
+  const openComposer = () => {
+    setIsComposerOpen(true);
+  };
+
+  const closeComposer = () => {
+    setIsComposerOpen(false);
+  };
+
+  const handleSave = () => {
+    setIsComposerOpen(false);
+    setSaveToastVisible(true);
+    window.setTimeout(() => setSaveToastVisible(false), 2200);
   };
 
   const isCurrentMonth = (date: Date) =>
@@ -237,7 +253,10 @@ export default function AgendaPage() {
           title="Agenda"
           subtitle="Gérez les rythmes de la famille avec une vue claire par semaine ou par mois."
           action={
-            <button className="rounded-2xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-violet-200 transition hover:-translate-y-0.5 hover:bg-violet-700">
+            <button
+              onClick={openComposer}
+              className="rounded-2xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-violet-200 transition hover:-translate-y-0.5 hover:bg-violet-700"
+            >
               + Nouvel événement
             </button>
           }
@@ -342,6 +361,130 @@ export default function AgendaPage() {
           </aside>
         </div>
       </div>
+
+      {isComposerOpen ? (
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/30 px-0 backdrop-blur-sm sm:items-center sm:px-4">
+          <button
+            type="button"
+            aria-label="Fermer la fenêtre"
+            className="absolute inset-0 cursor-default"
+            onClick={closeComposer}
+          />
+          <section className="relative z-10 w-full rounded-t-[2rem] border border-white/70 bg-white p-5 shadow-2xl shadow-violet-200/40 sm:max-w-2xl sm:rounded-[2rem] sm:p-6">
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">Nouvel événement</p>
+                <h3 className="mt-2 text-2xl font-semibold text-slate-900">Créer un rendez-vous</h3>
+                <p className="mt-2 text-sm text-slate-500">Une première fenêtre visuelle pour préparer l’ajout d’événements.</p>
+              </div>
+              <button
+                type="button"
+                onClick={closeComposer}
+                className="rounded-full bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-200"
+              >
+                Fermer
+              </button>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <label className="space-y-2 md:col-span-2">
+                <span className="text-sm font-semibold text-slate-700">Titre de l’événement</span>
+                <input
+                  type="text"
+                  placeholder="Ex. Rugby, dentiste, repas famille..."
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                />
+              </label>
+
+              <label className="space-y-2">
+                <span className="text-sm font-semibold text-slate-700">Calendrier</span>
+                <select className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-100">
+                  <option>Maison</option>
+                  <option>Rugby</option>
+                  <option>École</option>
+                  <option>Famille</option>
+                </select>
+              </label>
+
+              <label className="space-y-2">
+                <span className="text-sm font-semibold text-slate-700">Catégorie</span>
+                <select className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-100">
+                  <option>École</option>
+                  <option>Sport</option>
+                  <option>Famille</option>
+                  <option>Rendez-vous</option>
+                  <option>Courses</option>
+                  <option>Important</option>
+                </select>
+              </label>
+
+              <label className="space-y-2">
+                <span className="text-sm font-semibold text-slate-700">Date</span>
+                <input
+                  type="date"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                />
+              </label>
+
+              <label className="space-y-2">
+                <span className="text-sm font-semibold text-slate-700">Heure de début</span>
+                <input
+                  type="time"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                />
+              </label>
+
+              <label className="space-y-2">
+                <span className="text-sm font-semibold text-slate-700">Heure de fin</span>
+                <input
+                  type="time"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                />
+              </label>
+
+              <label className="flex items-center gap-3 rounded-2xl bg-violet-50 px-4 py-3 md:col-span-2">
+                <input
+                  type="checkbox"
+                  className="h-4 w-4 rounded border-slate-300 text-violet-600 focus:ring-violet-200"
+                />
+                <span className="text-sm font-semibold text-slate-700">Toute la journée</span>
+              </label>
+
+              <label className="space-y-2 md:col-span-2">
+                <span className="text-sm font-semibold text-slate-700">Description optionnelle</span>
+                <textarea
+                  rows={4}
+                  placeholder="Ajoute un détail, une note ou une consigne..."
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-300 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                />
+              </label>
+            </div>
+
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                onClick={closeComposer}
+                className="rounded-2xl bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                onClick={handleSave}
+                className="rounded-2xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-md shadow-violet-200 transition hover:bg-violet-700"
+              >
+                Enregistrer
+              </button>
+            </div>
+          </section>
+        </div>
+      ) : null}
+
+      {saveToastVisible ? (
+        <div className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-slate-900 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/20">
+          Événement ajouté
+        </div>
+      ) : null}
     </main>
   );
 }
