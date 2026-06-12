@@ -1,4 +1,7 @@
+ "use client";
+
 import { PageHeader } from "./_components/page-header";
+import { useAuth } from "../src/hooks/useAuth";
 
 const summaryCards = [
   { title: "3 événements aujourd'hui", value: "3", tone: "bg-violet-100 text-violet-700" },
@@ -24,6 +27,9 @@ const weekHighlights = [
 const quickActions = ["Ajouter un événement", "Ajouter un repas", "Ajouter un article", "Ajouter une tâche"];
 
 export default function HomePage() {
+  const { user, profile, isDemoMode } = useAuth();
+  const showAuthCard = !user;
+
   return (
     <main className="min-h-screen px-4 py-4 text-slate-900 sm:px-6 lg:px-8 lg:py-6">
       <div className="mx-auto max-w-7xl space-y-6 pb-24 lg:pb-0">
@@ -39,6 +45,43 @@ export default function HomePage() {
 
         <section className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_360px]">
           <div className="space-y-6">
+            {showAuthCard ? (
+              <article className="glass-card p-5 md:p-6">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">Connectez votre famille</p>
+                    <h2 className="mt-2 text-2xl font-semibold text-slate-900">Synchronisez les calendriers et les tâches</h2>
+                    <p className="mt-2 text-sm text-slate-500">
+                      {isDemoMode
+                        ? "Le mode démo reste actif, mais vous pouvez déjà préparer votre espace Supabase."
+                        : "Créez un compte pour commencer à partager les informations de la famille."}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <a href="/login" className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-slate-100">
+                      Se connecter
+                    </a>
+                    <a href="/register" className="rounded-2xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200">
+                      Créer un compte
+                    </a>
+                  </div>
+                </div>
+              </article>
+            ) : (
+              <article className="glass-card p-5 md:p-6">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">Mon profil</p>
+                    <h2 className="mt-2 text-2xl font-semibold text-slate-900">{profile?.display_name ?? "Stéphane"}</h2>
+                    <p className="mt-1 text-sm text-slate-500">{profile?.email ?? "stephane@example.com"}</p>
+                  </div>
+                  <a href="/profil" className="rounded-2xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200">
+                    Ouvrir le profil
+                  </a>
+                </div>
+              </article>
+            )}
+
             <article className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {summaryCards.map((card) => (
                 <div key={card.title} className={`glass-card rounded-3xl p-5 ${card.tone}`}>

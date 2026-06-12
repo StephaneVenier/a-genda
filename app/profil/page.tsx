@@ -1,7 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { PageHeader } from "../_components/page-header";
-import { isSupabaseConfigured } from "../../src/lib/supabaseClient";
+import { useAuth } from "../../src/hooks/useAuth";
 
 const preferences = [
   { label: "Thème", value: "Clair pastel", tone: "bg-violet-100 text-violet-700" },
@@ -20,6 +21,21 @@ const stats = [
 ];
 
 export default function ProfilPage() {
+  const router = useRouter();
+  const { profile, signOut, isDemoMode } = useAuth();
+
+  const displayName = profile?.display_name ?? "Stéphane";
+  const email = profile?.email ?? "stephane@example.com";
+  const createdAt = profile?.created_at
+    ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" }).format(new Date(profile.created_at))
+    : "Compte de démonstration";
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/login");
+    router.refresh();
+  };
+
   return (
     <main className="min-h-screen px-4 py-4 text-slate-900 sm:px-6 lg:px-8 lg:py-6">
       <div className="mx-auto max-w-7xl space-y-6 pb-24 lg:pb-0">
@@ -39,17 +55,23 @@ export default function ProfilPage() {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-4">
                   <span className="flex h-16 w-16 items-center justify-center rounded-3xl bg-violet-100 text-lg font-bold text-violet-700 shadow-sm">
-                    ST
+                    {displayName
+                      .split(" ")
+                      .map((part) => part[0])
+                      .join("")
+                      .slice(0, 2)
+                      .toUpperCase()}
                   </span>
                   <div>
-                    <h2 className="text-2xl font-semibold text-slate-900">Stéphane</h2>
+                    <h2 className="text-2xl font-semibold text-slate-900">{displayName}</h2>
                     <p className="mt-1 text-sm text-slate-500">Administrateur du groupe Maison</p>
                   </div>
                 </div>
 
                 <div className="rounded-3xl bg-violet-50 px-4 py-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-500">Email</p>
-                  <p className="mt-1 text-sm font-semibold text-slate-700">stephane@example.com</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-700">{email}</p>
+                  <p className="mt-2 text-xs text-slate-500">Créé le {createdAt}</p>
                 </div>
               </div>
             </div>
@@ -111,6 +133,7 @@ export default function ProfilPage() {
                 {["Gérer les notifications", "Se déconnecter"].map((item, index) => (
                   <button
                     key={item}
+                    onClick={index === 1 ? handleSignOut : undefined}
                     className={[
                       "w-full rounded-2xl px-4 py-3 text-sm font-semibold transition duration-200 hover:-translate-y-0.5",
                       index === 0
@@ -129,20 +152,22 @@ export default function ProfilPage() {
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">Connexion</p>
                   <h3 className="mt-2 text-xl font-semibold text-slate-900">
-                    {isSupabaseConfigured ? "Connecté à Supabase" : "Mode démo"}
+                    {isDemoMode ? "Mode démo" : "Connecté à Supabase"}
                   </h3>
                 </div>
                 <span
                   className={[
                     "rounded-full px-3 py-2 text-xs font-semibold",
-                    isSupabaseConfigured ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-600",
+                    isDemoMode ? "bg-slate-100 text-slate-600" : "bg-emerald-100 text-emerald-700",
                   ].join(" ")}
                 >
-                  {isSupabaseConfigured ? "En ligne" : "Hors ligne"}
+                  {isDemoMode ? "Hors ligne" : "En ligne"}
                 </span>
               </div>
               <p className="mt-3 text-sm text-slate-500">
-                L'interface continue d'utiliser les données mockées tant que la base n'est pas branchée.
+                {isDemoMode
+                  ? "L'interface continue d'utiliser les données mockées tant que la base n'est pas branchée."
+                  : "Votre session Supabase est active et les données peuvent être synchronisées."}
               </p>
             </article>
           </aside>
