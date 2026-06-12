@@ -20,6 +20,9 @@ export function AppNavigation() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, profile, isDemoMode, signOut } = useAuth();
+  const displayName = profile?.display_name ?? user?.user_metadata?.display_name ?? "Profil à initialiser";
+  const email = profile?.email ?? user?.email ?? "";
+  const hasProfile = Boolean(profile);
 
   const handleSignOut = async () => {
     await signOut();
@@ -42,17 +45,22 @@ export function AppNavigation() {
 
             <div className="mt-6 rounded-3xl bg-violet-50 px-4 py-3">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-500">Compte</p>
-              {user && profile ? (
+              {user ? (
                 <div className="mt-2 space-y-3 rounded-2xl bg-white px-3 py-3 shadow-sm">
                   <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-xs font-bold text-violet-700">
-                    {(profile.display_name ?? profile.email ?? "AG").slice(0, 2).toUpperCase()}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-slate-800">{profile.display_name ?? "Utilisateur"}</p>
-                    <p className="truncate text-xs text-slate-500">{profile.email}</p>
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-xs font-bold text-violet-700">
+                      {(displayName || email || "AG").slice(0, 2).toUpperCase()}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-slate-800">{displayName}</p>
+                      <p className="truncate text-xs text-slate-500">{email}</p>
+                    </div>
                   </div>
-                </div>
+                  {!hasProfile ? (
+                    <span className="inline-flex w-fit rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold text-amber-700">
+                      Profil à initialiser
+                    </span>
+                  ) : null}
                   <div className="flex flex-wrap gap-2">
                     <Link href="/profil" className="rounded-full bg-violet-600 px-3 py-2 text-xs font-semibold text-white shadow-sm">
                       Mon profil
@@ -103,6 +111,65 @@ export function AppNavigation() {
               );
             })}
           </nav>
+
+          <div className="mt-auto pt-6">
+            <div className="rounded-3xl bg-violet-50 p-4">
+              {user ? (
+                <>
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-sm font-bold text-white shadow-sm">
+                      {(displayName || email || "AG").slice(0, 2).toUpperCase()}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-slate-900">{displayName}</p>
+                      <p className="truncate text-xs text-slate-500">{email}</p>
+                    </div>
+                  </div>
+                  {!hasProfile ? (
+                    <span className="inline-flex w-fit rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold text-amber-700">
+                      Profil à initialiser
+                    </span>
+                  ) : null}
+
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link
+                      href="/profil"
+                      className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm"
+                    >
+                      Profil
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="rounded-full bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm"
+                    >
+                      Déconnexion
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm font-semibold text-slate-800">Connexion</p>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Accédez à votre compte ou créez-en un pour synchroniser la famille.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Link
+                      href="/login"
+                      className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm"
+                    >
+                      Connexion
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="rounded-full bg-violet-600 px-3 py-2 text-xs font-semibold text-white shadow-sm"
+                    >
+                      Créer un compte
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -130,7 +197,7 @@ export function AppNavigation() {
             })}
           </div>
 
-          {user && profile ? (
+          {user ? (
             <div className="grid grid-cols-2 gap-2 px-1">
               <Link href="/profil" className="rounded-2xl bg-violet-100 px-3 py-3 text-center text-xs font-semibold text-violet-800 ring-1 ring-violet-200">
                 Mon profil
@@ -152,6 +219,46 @@ export function AppNavigation() {
               </Link>
             </div>
           )}
+
+          <div className="mx-1 rounded-3xl bg-violet-50 px-4 py-3 shadow-sm">
+            {user ? (
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 text-xs font-bold text-white">
+                  {(displayName || email || "AG").slice(0, 2).toUpperCase()}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-slate-900">{displayName}</p>
+                  <p className="truncate text-xs text-slate-500">{email}</p>
+                </div>
+                <Link
+                  href="/profil"
+                  className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm"
+                >
+                  Profil
+                </Link>
+                {!hasProfile ? (
+                  <span className="rounded-full bg-amber-100 px-3 py-2 text-[11px] font-semibold text-amber-700">
+                    Profil à initialiser
+                  </span>
+                ) : null}
+              </div>
+            ) : (
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-500">Connexion</p>
+                  <p className="text-[11px] text-slate-500">Accès compte et inscription</p>
+                </div>
+                <div className="flex gap-2">
+                  <Link href="/login" className="rounded-full bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm">
+                    Connexion
+                  </Link>
+                  <Link href="/register" className="rounded-full bg-violet-600 px-3 py-2 text-xs font-semibold text-white shadow-sm">
+                    Créer un compte
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
     </>

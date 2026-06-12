@@ -10,6 +10,8 @@ type AuthContextValue = {
   profile: UserProfile | null;
   loading: boolean;
   isDemoMode: boolean;
+  hasProfile: boolean;
+  isProfileReady: boolean;
   signOut: () => Promise<void>;
 };
 
@@ -76,6 +78,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       profile,
       loading,
       isDemoMode: !isSupabaseConfigured || !supabase,
+      hasProfile: Boolean(profile),
+      isProfileReady: Boolean(profile),
       signOut: async () => {
         if (!supabase || !isSupabaseConfigured) return;
         await supabase.auth.signOut();

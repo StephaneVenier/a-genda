@@ -1,8 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { PageHeader } from "../_components/page-header";
 import { useAuth } from "../../src/hooks/useAuth";
+import { isSupabaseConfigured, supabase } from "../../src/lib/supabaseClient";
 
 const preferences = [
   { label: "Thème", value: "Clair pastel", tone: "bg-violet-100 text-violet-700" },
@@ -22,7 +24,9 @@ const stats = [
 
 export default function ProfilPage() {
   const router = useRouter();
-  const { profile, signOut, isDemoMode } = useAuth();
+  const { user, profile, signOut, isDemoMode } = useAuth();
+  const [repairMessage, setRepairMessage] = useState<string | null>(null);
+  const [repairLoading, setRepairLoading] = useState(false);
 
   const displayName = profile?.display_name ?? "Stéphane";
   const email = profile?.email ?? "stephane@example.com";
@@ -34,6 +38,28 @@ export default function ProfilPage() {
     await signOut();
     router.push("/login");
     router.refresh();
+  };
+
+  const handleRepairProfile = async () => {
+    if (!user || !isSupabaseConfigured || !supabase) return;
+    setRepairLoading(true);
+    setRepairMessage(null);
+
+    const displayName = user.user_metadata?.display_name ?? user.email?.split("@")[0] ?? "Utilisateur";
+    const { error } = await supabase.from("profiles").upsert({
+      id: user.id,
+      email: user.email ?? "",
+      display_name: displayName,
+    });
+
+    if (error) {
+      setRepairMessage("Impossible de créer le profil. Vérifiez la configuration Supabase.");
+    } else {
+      setRepairMessage("Profil créé ou réparé avec succès.");
+      router.refresh();
+    }
+
+    setRepairLoading(false);
   };
 
   return (
@@ -75,6 +101,34 @@ export default function ProfilPage() {
                 </div>
               </div>
             </div>
+
+            {user && !profile ? (
+              <div className="glass-card p-5 md:p-6">
+                <div className="rounded-3xl bg-amber-50 p-4">
+                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-600">
+                    Profil à initialiser
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                    Votre compte est connecté, mais votre profil n&apos;est pas encore créé.
+                  </h3>
+                  <p className="mt-2 text-sm text-slate-600">
+                    Vous pouvez créer ou réparer le profil maintenant sans quitter A-Genda.
+                  </p>
+                  <button
+                    onClick={handleRepairProfile}
+                    disabled={repairLoading}
+                    className="mt-4 rounded-2xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {repairLoading ? "Réparation..." : "Créer / réparer mon profil"}
+                  </button>
+                  {repairMessage ? (
+                    <p className="mt-3 rounded-2xl bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
+                      {repairMessage}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
 
             <div className="grid gap-4 md:grid-cols-2">
               {preferences.map((item) => (

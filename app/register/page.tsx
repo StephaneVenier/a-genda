@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { supabase, isSupabaseConfigured } from "../../src/lib/supabaseClient";
+import { isSupabaseConfigured, supabase } from "../../src/lib/supabaseClient";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -12,11 +12,13 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+    setSuccess(null);
 
     if (password !== confirmPassword) {
       setError("Les mots de passe ne correspondent pas.");
@@ -27,7 +29,7 @@ export default function RegisterPage() {
 
     if (!supabase || !isSupabaseConfigured) {
       setLoading(false);
-      router.push("/");
+      setSuccess("Mode démo actif. Configure Supabase pour créer un compte.");
       return;
     }
 
@@ -47,18 +49,31 @@ export default function RegisterPage() {
       return;
     }
 
-    const { error: profileError } = await supabase.from("profiles").upsert({
-      id: data.user.id,
-      email,
-      display_name: displayName,
-    });
+    if (data.user) {
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .upsert({
+          id: data.user.id,
+          email: data.user.email ?? email,
+          display_name: displayName,
+        })
+        .select();
 
-    if (profileError) {
-      setError(profileError.message);
+      if (profileError) {
+        setSuccess("Compte créé, mais profil non initialisé. Vérifiez la configuration Supabase.");
+        setLoading(false);
+        return;
+      }
+    }
+
+    if (!data.session) {
+      setSuccess("Compte créé, vérifiez vos emails.");
       setLoading(false);
       return;
     }
 
+    setSuccess("Compte créé, redirection en cours...");
+    setLoading(false);
     router.push("/");
     router.refresh();
   };
@@ -117,6 +132,7 @@ export default function RegisterPage() {
           </label>
 
           {error ? <p className="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</p> : null}
+          {success ? <p className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</p> : null}
 
           <button
             type="submit"
