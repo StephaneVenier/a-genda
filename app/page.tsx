@@ -91,8 +91,9 @@ export default function HomePage() {
 
             <nav className="mt-6 space-y-2">
               {["Agenda", "Menus", "Courses", "Ménage", "Groupes", "Profil"].map((item, index) => (
-                <div
+                <Link
                   key={item}
+                  href={item === "Agenda" ? "/" : `/${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}
                   className={[
                     "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition duration-200",
                     index === 0
@@ -102,7 +103,7 @@ export default function HomePage() {
                 >
                   <span className="h-2.5 w-2.5 rounded-full bg-violet-300" />
                   {item}
-                </div>
+                </Link>
               ))}
             </nav>
 
@@ -334,7 +335,8 @@ export default function HomePage() {
             const isPrimary = item === "Agenda";
             const isCenter = item === "Plus";
             return (
-              <div
+              <Link
+                href={item === "Agenda" ? "/" : item === "Menus" ? "/menus" : "#"}
                 key={item}
                 className={[
                   "flex flex-col items-center justify-end rounded-2xl px-2 py-2 text-[11px] font-medium transition duration-200",
@@ -342,7 +344,7 @@ export default function HomePage() {
                     ? "bg-violet-100 text-violet-700 shadow-sm"
                     : "text-slate-500 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900",
                 ].join(" ")}
-              >
+                >
                 {isCenter ? (
                   <span className="mb-1 -mt-5 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-base font-bold text-white shadow-lg shadow-violet-200 ring-4 ring-white">
                     +
@@ -351,7 +353,7 @@ export default function HomePage() {
                   <span className="mb-1 h-2 w-2 rounded-full bg-violet-300" />
                 )}
                 {item}
-              </div>
+              </Link>
             );
           })}
         </div>
@@ -359,3 +361,4 @@ export default function HomePage() {
     </main>
   );
 }
+import Link from "next/link";
