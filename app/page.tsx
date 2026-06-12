@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const calendarDays = [
   "", "", "", "1", "2", "3", "4",
   "5", "6", "7", "8", "9", "10", "11",
@@ -58,6 +60,14 @@ const categories = [
 ];
 
 const navItems = ["Agenda", "Menus", "Courses", "Ménage", "Plus"];
+
+const slugMap: Record<string, string> = {
+  Agenda: "/",
+  Menus: "/menus",
+  Courses: "/courses",
+  Ménage: "/menage",
+  Plus: "#",
+};
 
 export default function HomePage() {
   return (
@@ -331,20 +341,20 @@ export default function HomePage() {
 
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/70 bg-white/92 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden">
         <div className="mx-auto grid max-w-3xl grid-cols-5 items-end gap-1">
-          {navItems.map((item, index) => {
+          {navItems.map((item) => {
             const isPrimary = item === "Agenda";
             const isCenter = item === "Plus";
             return (
               <Link
-                href={item === "Agenda" ? "/" : item === "Menus" ? "/menus" : "#"}
                 key={item}
+                href={slugMap[item]}
                 className={[
                   "flex flex-col items-center justify-end rounded-2xl px-2 py-2 text-[11px] font-medium transition duration-200",
                   isPrimary
                     ? "bg-violet-100 text-violet-700 shadow-sm"
                     : "text-slate-500 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900",
                 ].join(" ")}
-                >
+              >
                 {isCenter ? (
                   <span className="mb-1 -mt-5 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600 text-base font-bold text-white shadow-lg shadow-violet-200 ring-4 ring-white">
                     +
@@ -361,4 +371,3 @@ export default function HomePage() {
     </main>
   );
 }
-import Link from "next/link";
