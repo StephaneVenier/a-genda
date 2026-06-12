@@ -103,15 +103,13 @@ export default function MenusPage() {
                     <div className={`rounded-full px-3 py-1 text-xs font-semibold ${item.badge}`}>
                       {item.day}
                     </div>
-                    <span className="text-xs font-medium text-slate-400">
-                      {index + 1}/7
-                    </span>
+                    <span className="text-xs font-medium text-slate-400">{index + 1}/7</span>
                   </div>
 
                   <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-2">
                     <div className="rounded-2xl bg-white p-4 shadow-sm">
                       <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
-                        <span>🍽️</span>
+                        <span>🥗</span>
                         Midi
                       </div>
                       <p className="text-sm text-slate-600">{item.midi}</p>
@@ -119,7 +117,7 @@ export default function MenusPage() {
 
                     <div className="rounded-2xl bg-white p-4 shadow-sm">
                       <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-900">
-                        <span>🌙</span>
+                        <span>🍲</span>
                         Soir
                       </div>
                       <p className="text-sm text-slate-600">{item.soir}</p>
