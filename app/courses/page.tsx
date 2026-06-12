@@ -47,21 +47,15 @@ export default function CoursesPage() {
   return (
     <main className="min-h-screen px-4 py-4 text-slate-900 sm:px-6 lg:px-8 lg:py-6">
       <div className="mx-auto max-w-7xl space-y-6 pb-24 lg:pb-0">
-        <header className="glass-card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">
-              A-Genda
-            </p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-              Liste de courses
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">Articles à acheter cette semaine</p>
-          </div>
-
-          <button className="rounded-2xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 hover:bg-violet-500 hover:shadow-xl">
-            + Ajouter un article
-          </button>
-        </header>
+        <PageHeader
+          title="Liste de courses"
+          subtitle="Articles à acheter cette semaine"
+          action={
+            <button className="rounded-2xl bg-violet-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition hover:-translate-y-0.5 hover:bg-violet-500 hover:shadow-xl">
+              + Ajouter un article
+            </button>
+          }
+        />
 
         <section className="grid gap-6 xl:grid-cols-[minmax(0,1.55fr)_420px]">
           <article className="space-y-4">
@@ -187,3 +181,4 @@ export default function CoursesPage() {
     </main>
   );
 }
+import { PageHeader } from "../_components/page-header";

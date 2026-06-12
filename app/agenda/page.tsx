@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHeader } from "../_components/page-header";
 
 const events = [
   {
@@ -86,23 +87,15 @@ export default function AgendaPage() {
         </aside>
 
         <section className="space-y-6 pb-24 lg:pb-0">
-          <header className="glass-card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">
-                Agenda
-              </p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-                Calendrier familial
-              </h1>
-              <p className="mt-1 text-sm text-slate-500">
-                Vue mensuelle, douce et lisible pour suivre la famille
-              </p>
-            </div>
-
-            <button className="inline-flex items-center justify-center rounded-2xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition duration-200 hover:-translate-y-0.5 hover:bg-violet-500 hover:shadow-xl">
-              + Nouvel événement
-            </button>
-          </header>
+          <PageHeader
+            title="Calendrier familial"
+            subtitle="Vue mensuelle, douce et lisible pour suivre la famille"
+            action={
+              <button className="inline-flex items-center justify-center rounded-2xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition duration-200 hover:-translate-y-0.5 hover:bg-violet-500 hover:shadow-xl">
+                + Nouvel événement
+              </button>
+            }
+          />
 
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_360px]">
             <article className="glass-card p-5 md:p-6">

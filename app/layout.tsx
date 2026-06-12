@@ -26,12 +26,12 @@ export default function RootLayout({
   return (
     <html lang="fr" className="h-full antialiased">
       <body className="min-h-full bg-[radial-gradient(circle_at_top_left,_rgba(196,181,253,0.35),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(216,180,254,0.18),_transparent_24%),linear-gradient(180deg,_#ffffff_0%,_#faf7ff_100%)] text-slate-900">
-        <div className="min-h-screen lg:grid lg:grid-cols-[240px_minmax(0,1fr)]">
+        <div className="min-h-screen lg:grid lg:grid-cols-[220px_minmax(0,1fr)]">
           <aside className="hidden lg:flex lg:flex-col">
             <div className="glass-card flex h-full flex-col p-5">
               <div>
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-100 text-lg">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-100 text-lg">
                     🏠
                   </div>
                   <div>
@@ -53,7 +53,7 @@ export default function RootLayout({
                 </div>
               </div>
 
-              <nav className="mt-6 space-y-2">
+              <nav className="mt-6 space-y-1.5">
                 {navItems.map((item, index) => (
                   <Link
                     key={item}
@@ -61,11 +61,16 @@ export default function RootLayout({
                     className={[
                       "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition duration-200",
                       index === 0
-                        ? "bg-violet-100 text-violet-700 shadow-sm"
+                        ? "bg-violet-100 text-violet-800 ring-1 ring-violet-200 shadow-sm"
                         : "text-slate-600 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900 hover:shadow-sm",
                     ].join(" ")}
                   >
-                    <span className="h-2.5 w-2.5 rounded-full bg-violet-300" />
+                    <span
+                      className={[
+                        "h-2.5 w-2.5 rounded-full",
+                        index === 0 ? "bg-violet-600" : "bg-violet-300",
+                      ].join(" ")}
+                    />
                     {item}
                   </Link>
                 ))}
@@ -85,11 +90,16 @@ export default function RootLayout({
                 className={[
                   "flex flex-col items-center justify-end rounded-2xl px-2 py-2 text-[11px] font-medium transition duration-200",
                   index === 0
-                    ? "bg-violet-100 text-violet-700 shadow-sm"
+                    ? "bg-violet-100 text-violet-800 ring-1 ring-violet-200 shadow-sm"
                     : "text-slate-500 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900",
                 ].join(" ")}
               >
-                <span className="mb-1 h-2 w-2 rounded-full bg-violet-300" />
+                <span
+                  className={[
+                    "mb-1 h-2 w-2 rounded-full",
+                    index === 0 ? "bg-violet-600" : "bg-violet-300",
+                  ].join(" ")}
+                />
                 {item}
               </Link>
             ))}

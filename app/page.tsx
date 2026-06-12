@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHeader } from "./_components/page-header";
 
 const summaryCards = [
   { title: "3 événements aujourd'hui", value: "3", tone: "bg-violet-100 text-violet-700" },
@@ -84,20 +85,15 @@ export default function HomePage() {
         </aside>
 
         <section className="space-y-6 pb-24 lg:pb-0">
-          <header className="glass-card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">
-                Bonjour Stéphane
-              </p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-                Voici l&apos;organisation de la famille aujourd&apos;hui
-              </h1>
-            </div>
-
-            <button className="inline-flex items-center justify-center rounded-2xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition duration-200 hover:-translate-y-0.5 hover:bg-violet-500 hover:shadow-xl">
-              Ajouter un événement
-            </button>
-          </header>
+          <PageHeader
+            title="Bonjour Stéphane"
+            subtitle="Voici l'organisation de la famille aujourd'hui"
+            action={
+              <button className="inline-flex items-center justify-center rounded-2xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-200 transition duration-200 hover:-translate-y-0.5 hover:bg-violet-500 hover:shadow-xl">
+                Ajouter un événement
+              </button>
+            }
+          />
 
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_360px]">
             <section className="space-y-6">

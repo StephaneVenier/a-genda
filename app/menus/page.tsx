@@ -56,20 +56,11 @@ export default function MenusPage() {
   return (
     <main className="min-h-screen px-4 py-4 text-slate-900 sm:px-6 lg:px-8 lg:py-6">
       <div className="mx-auto max-w-7xl space-y-6 pb-24 lg:pb-0">
-        <header className="glass-card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-violet-500">
-              A-Genda
-            </p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
-              Menus de la semaine
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Une vue familiale simple, pastel et facile à lire sur mobile comme sur desktop.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
+        <PageHeader
+          title="Menus de la semaine"
+          subtitle="Une vue familiale simple, pastel et facile à lire sur mobile comme sur desktop."
+          action={
+            <div className="flex flex-wrap gap-2">
             <button className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-slate-100 transition hover:-translate-y-0.5 hover:shadow-md">
               Semaine du 12 au 18 mai
             </button>
@@ -77,7 +68,8 @@ export default function MenusPage() {
               Ajouter un repas
             </button>
           </div>
-        </header>
+          }
+        />
 
         <section className="grid gap-6 xl:grid-cols-[minmax(0,1.55fr)_420px]">
           <article className="glass-card p-5 md:p-6">
@@ -167,3 +159,4 @@ export default function MenusPage() {
     </main>
   );
 }
+import { PageHeader } from "../_components/page-header";
