@@ -6,6 +6,22 @@ const calendarDays = [
   "26", "27", "28", "29", "30", "31", "",
 ];
 
+const dayEvents: Record<string, Array<{ label: string; tone: string }>> = {
+  "5": [
+    { label: "Rugby 17h30", tone: "bg-emerald-100 text-emerald-700" },
+    { label: "Sport", tone: "bg-emerald-50 text-emerald-700" },
+  ],
+  "7": [{ label: "École 16h30", tone: "bg-sky-100 text-sky-700" }],
+  "12": [{ label: "Aujourd'hui", tone: "bg-violet-600 text-white" }],
+  "18": [{ label: "Dentiste 15h00", tone: "bg-rose-100 text-rose-700" }],
+  "24": [{ label: "Courses", tone: "bg-amber-100 text-amber-700" }],
+  "28": [
+    { label: "Anniversaire Papi", tone: "bg-fuchsia-100 text-fuchsia-700" },
+    { label: "Famille", tone: "bg-fuchsia-50 text-fuchsia-700" },
+  ],
+  "30": [{ label: "Repas famille", tone: "bg-violet-100 text-violet-700" }],
+};
+
 const todayEvents = [
   {
     title: "Rugby",
@@ -30,11 +46,7 @@ const todayEvents = [
   },
 ];
 
-const upcomingEvents = [
-  "Courses — Passage au supermarché",
-  "Anniversaire Papi",
-  "Repas famille",
-];
+const upcomingEvents = ["Courses — Passage au supermarché", "Anniversaire Papi", "Repas famille"];
 
 const categories = [
   { label: "École", style: "bg-sky-100 text-sky-700" },
@@ -50,7 +62,7 @@ const navItems = ["Agenda", "Menus", "Courses", "Ménage", "Groupes", "Profil"];
 export default function HomePage() {
   return (
     <main className="min-h-screen px-4 py-4 text-slate-900 sm:px-6 lg:px-8 lg:py-6">
-      <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
+      <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
         <aside className="hidden lg:flex lg:flex-col">
           <div className="glass-card flex h-full flex-col p-5">
             <div>
@@ -140,7 +152,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_360px]">
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.8fr)_360px]">
             <section className="space-y-6">
               <article className="glass-card p-5 md:p-6">
                 <div className="mb-5 flex items-center justify-between gap-3">
@@ -166,18 +178,14 @@ export default function HomePage() {
                   ))}
                   {calendarDays.map((day, index) => {
                     const isToday = day === "12";
-                    const hasDot = ["5", "7", "12", "18", "24", "28"].includes(day);
+                    const events = dayEvents[day] ?? [];
                     return (
                       <div
                         key={`${day}-${index}`}
                         className={[
-                          "min-h-20 rounded-2xl border p-2 sm:min-h-24",
-                          day
-                            ? "border-slate-100 bg-white"
-                            : "border-transparent bg-transparent",
-                          isToday
-                            ? "border-violet-200 bg-violet-50/80 shadow-md shadow-violet-100"
-                            : "shadow-sm",
+                          "min-h-24 rounded-2xl border p-2 sm:min-h-28",
+                          day ? "border-slate-100 bg-white shadow-sm" : "border-transparent bg-transparent",
+                          isToday ? "border-violet-200 bg-violet-50/80 shadow-md shadow-violet-100" : "",
                         ].join(" ")}
                       >
                         {day ? (
@@ -191,7 +199,7 @@ export default function HomePage() {
                               >
                                 {day}
                               </span>
-                              {hasDot ? (
+                              {events.length > 0 ? (
                                 <span className="mt-1 h-2 w-2 rounded-full bg-violet-400" />
                               ) : null}
                             </div>
@@ -200,33 +208,16 @@ export default function HomePage() {
                                 Aujourd&apos;hui
                               </p>
                             ) : null}
-                            {!isToday && hasDot ? (
+                            {events.length > 0 ? (
                               <div className="mt-3 space-y-1.5">
-                                {day === "5" ? (
-                                  <div className="rounded-xl bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700">
-                                    Rugby 17h30
+                                {events.map((event) => (
+                                  <div
+                                    key={event.label}
+                                    className={`rounded-xl px-2 py-1 text-[10px] font-semibold leading-4 ${event.tone}`}
+                                  >
+                                    {event.label}
                                   </div>
-                                ) : null}
-                                {day === "7" ? (
-                                  <div className="rounded-xl bg-sky-50 px-2 py-1 text-[10px] font-semibold text-sky-700">
-                                    École
-                                  </div>
-                                ) : null}
-                                {day === "18" ? (
-                                  <div className="rounded-xl bg-rose-50 px-2 py-1 text-[10px] font-semibold text-rose-700">
-                                    Dentiste
-                                  </div>
-                                ) : null}
-                                {day === "24" ? (
-                                  <div className="rounded-xl bg-amber-50 px-2 py-1 text-[10px] font-semibold text-amber-700">
-                                    Courses
-                                  </div>
-                                ) : null}
-                                {day === "28" ? (
-                                  <div className="rounded-xl bg-fuchsia-50 px-2 py-1 text-[10px] font-semibold text-fuchsia-700">
-                                    Papi
-                                  </div>
-                                ) : null}
+                                ))}
                               </div>
                             ) : null}
                           </>
