@@ -27,7 +27,7 @@ const navItems = ["Accueil", "Agenda", "Menus", "Courses", "Ménage"];
 
 const navMap: Record<string, string> = {
   Accueil: "/",
-  Agenda: "#agenda",
+  Agenda: "/agenda",
   Menus: "/menus",
   Courses: "/courses",
   "Ménage": "/menage",
@@ -70,7 +70,7 @@ export default function HomePage() {
                   href={navMap[item]}
                   className={[
                     "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition duration-200",
-                    item === "Accueil"
+                    index === 0
                       ? "bg-violet-100 text-violet-700 shadow-sm"
                       : "text-slate-600 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900 hover:shadow-sm",
                   ].join(" ")}
@@ -198,13 +198,13 @@ export default function HomePage() {
 
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-white/70 bg-white/92 px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl lg:hidden">
         <div className="mx-auto grid max-w-3xl grid-cols-5 items-end gap-1">
-          {navItems.map((item) => (
+          {navItems.map((item, index) => (
             <Link
               key={item}
               href={navMap[item]}
               className={[
                 "flex flex-col items-center justify-end rounded-2xl px-2 py-2 text-[11px] font-medium transition duration-200",
-                item === "Accueil"
+                index === 0
                   ? "bg-violet-100 text-violet-700 shadow-sm"
                   : "text-slate-500 hover:-translate-y-0.5 hover:bg-slate-50 hover:text-slate-900",
               ].join(" ")}
