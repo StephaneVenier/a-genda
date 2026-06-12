@@ -50,7 +50,7 @@ const navItems = ["Agenda", "Menus", "Courses", "Ménage", "Groupes", "Profil"];
 export default function HomePage() {
   return (
     <main className="min-h-screen px-4 py-4 text-slate-900 sm:px-6 lg:px-8 lg:py-6">
-      <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[250px_minmax(0,1fr)]">
         <aside className="hidden lg:flex lg:flex-col">
           <div className="glass-card flex h-full flex-col p-5">
             <div>
@@ -140,7 +140,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.5fr)_360px]">
+          <div className="grid gap-6 xl:grid-cols-[minmax(0,1.7fr)_360px]">
             <section className="space-y-6">
               <article className="glass-card p-5 md:p-6">
                 <div className="mb-5 flex items-center justify-between gap-3">
@@ -155,7 +155,7 @@ export default function HomePage() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-7 gap-2">
+                <div className="grid grid-cols-7 gap-2 sm:gap-2.5">
                   {["L", "M", "M", "J", "V", "S", "D"].map((day) => (
                     <div
                       key={day}
@@ -175,15 +175,17 @@ export default function HomePage() {
                           day
                             ? "border-slate-100 bg-white"
                             : "border-transparent bg-transparent",
-                          isToday ? "border-violet-200 bg-violet-50/80" : "shadow-sm",
+                          isToday
+                            ? "border-violet-200 bg-violet-50/80 shadow-md shadow-violet-100"
+                            : "shadow-sm",
                         ].join(" ")}
                       >
                         {day ? (
                           <>
-                            <div className="flex items-start justify-between">
+                            <div className="flex items-start justify-between gap-2">
                               <span
                                 className={[
-                                  "inline-flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold",
+                                  "inline-flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold",
                                   isToday ? "bg-violet-600 text-white" : "text-slate-700",
                                 ].join(" ")}
                               >
@@ -194,9 +196,38 @@ export default function HomePage() {
                               ) : null}
                             </div>
                             {isToday ? (
-                              <p className="mt-3 inline-flex rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-violet-700 shadow-sm">
+                              <p className="mt-3 inline-flex w-full items-center justify-center rounded-2xl bg-violet-600 px-2.5 py-1.5 text-[11px] font-bold text-white shadow-sm">
                                 Aujourd&apos;hui
                               </p>
+                            ) : null}
+                            {!isToday && hasDot ? (
+                              <div className="mt-3 space-y-1.5">
+                                {day === "5" ? (
+                                  <div className="rounded-xl bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700">
+                                    Rugby 17h30
+                                  </div>
+                                ) : null}
+                                {day === "7" ? (
+                                  <div className="rounded-xl bg-sky-50 px-2 py-1 text-[10px] font-semibold text-sky-700">
+                                    École
+                                  </div>
+                                ) : null}
+                                {day === "18" ? (
+                                  <div className="rounded-xl bg-rose-50 px-2 py-1 text-[10px] font-semibold text-rose-700">
+                                    Dentiste
+                                  </div>
+                                ) : null}
+                                {day === "24" ? (
+                                  <div className="rounded-xl bg-amber-50 px-2 py-1 text-[10px] font-semibold text-amber-700">
+                                    Courses
+                                  </div>
+                                ) : null}
+                                {day === "28" ? (
+                                  <div className="rounded-xl bg-fuchsia-50 px-2 py-1 text-[10px] font-semibold text-fuchsia-700">
+                                    Papi
+                                  </div>
+                                ) : null}
+                              </div>
                             ) : null}
                           </>
                         ) : null}
