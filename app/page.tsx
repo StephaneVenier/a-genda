@@ -157,7 +157,10 @@ export default function HomePage() {
 
                 <div className="grid grid-cols-7 gap-2">
                   {["L", "M", "M", "J", "V", "S", "D"].map((day) => (
-                    <div key={day} className="py-1 text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    <div
+                      key={day}
+                      className="py-1 text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-400"
+                    >
                       {day}
                     </div>
                   ))}
@@ -186,7 +189,9 @@ export default function HomePage() {
                               >
                                 {day}
                               </span>
-                              {hasDot ? <span className="mt-1 h-2 w-2 rounded-full bg-violet-400" /> : null}
+                              {hasDot ? (
+                                <span className="mt-1 h-2 w-2 rounded-full bg-violet-400" />
+                              ) : null}
                             </div>
                             {isToday ? (
                               <p className="mt-3 inline-flex rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-violet-700 shadow-sm">
